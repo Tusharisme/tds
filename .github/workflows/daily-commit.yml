@@ -2,7 +2,11 @@ name: Daily Commit
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Runs at 00:00 UTC every day
+    # Runs at 00:00 UTC every day
+    - cron: '0 0 * * *'
+  push:
+    branches:
+      - main  # This will also trigger the workflow on push to the 'main' branch
 
 jobs:
   daily-commit:
@@ -29,4 +33,4 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Notify 23f2003751@ds.study.iitm.ac.in
-      run: echo "Commit made by GitHub Actions"  # This step includes your email in its name
+      run: echo "Commit made by GitHub Actions"
