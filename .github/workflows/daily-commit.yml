@@ -14,6 +14,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Fetch all history for proper merging
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Pull latest changes
+        run: |
+          git pull origin master --rebase
 
       - name: Make changes
         run: |
@@ -21,10 +32,8 @@ jobs:
 
       - name: Commit changes
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add daily_commit.txt
-          git commit -m "Daily commit"
+          git commit -m "Daily commit" || echo "No changes to commit"
 
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
