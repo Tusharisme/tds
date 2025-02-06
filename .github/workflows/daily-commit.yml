@@ -15,7 +15,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0  # Fetch all history for proper merging
+          fetch-depth: 0  # Ensures full history for proper merging
 
       - name: Configure Git
         run: |
@@ -24,16 +24,15 @@ jobs:
 
       - name: Pull latest changes
         run: |
-          git pull origin master --rebase
+          git pull origin master --rebase || echo "No need to pull"
 
       - name: Make changes
-        run: |
-          echo "Daily commit" >> daily_commit.txt
+        run: echo "Daily commit on $(date)" >> daily_commit.txt
 
       - name: Commit changes
         run: |
           git add daily_commit.txt
-          git commit -m "Daily commit" || echo "No changes to commit"
+          git commit -m "Daily commit on $(date)" || echo "No changes to commit"
 
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
